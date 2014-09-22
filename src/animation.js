@@ -64,7 +64,6 @@
                         this.frameTime=now;
                     }else{
                         this.stop().fire('finish');
-                        this.timeout=0;
                     }
                 },
                 stop:function(){
@@ -72,6 +71,7 @@
                     cancelFrame(this._timer);
                 },
                 finish:function(){
+                    this.timeout=0;                    
                     this.complete=true;
                 }
             });
