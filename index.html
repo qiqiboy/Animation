@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Animation</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui"/>
+<meta name="format-detection" content="email=no" />
+<meta name="format-detection" content="address=no" />
+<meta name="format-detection" content="telephone=no" />
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+<body>
+    <div id="wrap" class="wrapper"></div>
+    <div class="contaol">
+        <button onclick="handle.start();">开始</button>
+        <button onclick="handle.stop();">暂停</button>
+        <button onclick="handle.finish();">结束</button>
+    </div>
+	<script type="text/javascript" src="src/animation.js"></script>
+    <script>
+        var wrap=document.getElementById('wrap'),
+            handle=new Animation(3000);
+        handle.start(function(){
+            console.log('动画开始')
+        }).stop(function(){
+            console.log('动画暂停')
+        }).next(function(){
+            wrap.style.height=this.percent*100+'%';
+        }).finish(function(){
+            console.log('动画结束')
+        });
+    </script>
+</body>
+</html>
