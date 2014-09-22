@@ -4,7 +4,7 @@
  * @github https://github.com/qiqiboy/animation
  */
 (function(ROOT, struct, undefined){
-	"use strict";
+    "use strict";
 	
     var nextFrame=ROOT.requestAnimationFrame            ||
                 ROOT.webkitRequestAnimationFrame        ||
