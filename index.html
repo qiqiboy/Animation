@@ -15,6 +15,9 @@
         <button onclick="handle.start();">开始</button>
         <button onclick="handle.stop();">暂停</button>
         <button onclick="handle.finish();">结束</button>
+        <button onclick="handle.setDuration(30000);">变慢</button>
+        <button onclick="handle.setDuration(1000);">变快</button>
+        <button onclick="handle.setDuration(8000);">恢复</button>
     </div>
 	<script type="text/javascript" src="src/animation.js"></script>
     <script>
@@ -22,7 +25,7 @@
             console={log:function(){}}
         }
         var wrap=document.getElementById('wrap'),
-            handle=new Animation(3000);
+            handle=new Animation(8000);
         handle.start(function(){
             console.log('动画开始')
         }).stop(function(){
