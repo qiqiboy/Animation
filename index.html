@@ -18,6 +18,9 @@
     </div>
 	<script type="text/javascript" src="src/animation.js"></script>
     <script>
+        if(typeof console=='undefined'){
+            console={log:function(){}}
+        }
         var wrap=document.getElementById('wrap'),
             handle=new Animation(3000);
         handle.start(function(){
