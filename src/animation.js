@@ -49,31 +49,9 @@
         bindEvent:function(){
             this.events={};
             this.on({
-                start:function(){
-                    this.playing=true;
-                    this.complete=false;
-                    this.frameTime=this.now();
-                    this.next();
-                },
-                next:function(){
-                    var total=this.duration,
-                        now=this.now();
-                    this.percent=total?this.easeFunc.call(null,this.timeout=Math.min(total,this.timeout+now-(this.frameTime||0)),0,total,total)/total:1;
-                    if(this.timeout<total){
-                        cancelFrame(this._timer);
-                        this._timer=nextFrame(this.next.bind(this));
-                        this.frameTime=now;
-                    }else{
-                        this.stop().fire('finish');
-                    }
-                },
-                stop:function(){
-                    this.playing=false;
-                    cancelFrame(this._timer);
-                },
                 finish:function(){
-                    this.timeout=0;                    
                     this.complete=true;
+                    this.timeout=0;
                 }
             });
         },
@@ -105,12 +83,45 @@
         toggle:function(){
             return this.playing?this.stop():this.start();
         },
-        finish:function(callback){
-            if(typeof callback=='function'){
-                return this.on('finish',callback);
+        _start:function(){
+            if(!this.playing){
+                this.playing=true;
+                this.complete=false;
+                this.frameTime=this.now();
+                this.fire('start').next();
             }
-            this.frameTime=0;
-            return this.next();
+            return this;
+        },
+        _next:function(){
+            var total=this.duration,
+                now=this.now();
+            this.percent=total?this.easeFunc.call(null,this.timeout=Math.min(total,this.timeout+now-(this.frameTime||0)),0,total,total)/total:1;
+            this.fire('next');
+            if(this.timeout<total){
+                cancelFrame(this._timer);
+                this._timer=nextFrame(this.next.bind(this));
+                this.frameTime=now;
+            }else{
+                setTimeout(function(){
+                    this.stop().fire('finish');
+                }.bind(this),0);
+            }
+            return this;
+        },
+        _stop:function(){
+            if(this.playing){
+                this.playing=false;
+                cancelFrame(this._timer);
+                this.fire('stop');
+            }
+            return this;
+        },
+        _finish:function(){
+            if(!this.complete){   
+                this.frameTime=0;
+                this.next();
+            }
+            return this;
         },
         setDuration:function(duration){
             this.duration=parseFloat(duration)||0;
@@ -119,12 +130,12 @@
         }
     }
 
-    "start next stop".split(" ").forEach(function(prop){
+    "start next stop finish".split(" ").forEach(function(prop){
         struct.prototype[prop]=function(callback){
             if(typeof callback=='function'){
                 return this.on(prop,callback);
             }
-            return this.fire(prop);
+            return this['_'+prop]();
         }
     });
 
