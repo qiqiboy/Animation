@@ -102,9 +102,7 @@
                 this._timer=nextFrame(this.next.bind(this));
                 this.frameTime=now;
             }else{
-                setTimeout(function(){
-                    this.stop().fire('finish');
-                }.bind(this),0);
+                this.stop().fire('finish');
             }
             return this;
         },
