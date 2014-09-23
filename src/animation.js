@@ -48,11 +48,8 @@
         percent:0,
         bindEvent:function(){
             this.events={};
-            this.on({
-                finish:function(){
-                    this.complete=true;
-                    this.timeout=0;
-                }
+            this.finish(function(){
+                this.complete=true;
             });
         },
         on:function(ev,callback){
@@ -86,8 +83,11 @@
         _start:function(){
             if(!this.playing){
                 this.playing=true;
-                this.complete=false;
                 this.frameTime=this.now();
+                if(this.complete){
+                    this.complete=false;
+                    this.timeout=0;
+                }
                 this.fire('start').next();
             }
             return this;
