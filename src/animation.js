@@ -127,6 +127,10 @@
             this.duration=parseFloat(duration)||0;
             this.timeout=this.duration*this.percent;
             return this;
+        },
+        setTween:function(tween){
+            this.easeFunc=typeof tween=='function'?tween:function(t,b,c,d){return c*t/d+b;};
+            return this;
         }
     }
 
@@ -151,7 +155,5 @@
     if(!(this instanceof arguments.callee)){
         return new arguments.callee(duration,easeFunc);
     }
-    this.setDuration(duration);
-    this.easeFunc=typeof easeFunc=='function'?easeFunc:function(t,b,c,d){return c*t/d+b;};
-    this.bindEvent();
+    this.setDuration(duration).setTween(easeFunc).bindEvent();
 });

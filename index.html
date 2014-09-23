@@ -17,7 +17,12 @@
         <button onclick="handle.finish();">结束</button>
         <button onclick="handle.setDuration(30000);">变慢</button>
         <button onclick="handle.setDuration(1000);">变快</button>
-        <button onclick="handle.setDuration(8000);">恢复</button>
+        <button onclick="handle.setDuration(3000);">恢复</button><br/>
+        <button onclick="handle.setTween(function(t,b,c,d){ return c*t/d + b; })">Linear</button>
+        <button onclick="handle.setTween(function(t,b,c,d){return c*(t/=d)*t + b;})">easeIn</button>
+        <button onclick="handle.setTween(function(t,b,c,d){return -c *(t/=d)*(t-2) + b; })">easeOut</button>
+        <button onclick="handle.setTween(function(t,b,c,d){ if ((t/=d/2) < 1) return c/2*t*t + b;return -c/2 * ((--t)*(t-2) - 1) + b; })">easeInOut</button>
+        <button onclick="handle.setTween(function(t,b,c,d){ if ((t/=d) < (1/2.75)) { return c*(7.5625*t*t) + b; } else if (t < (2/2.75)) { return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b; } else if (t < (2.5/2.75)) { return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b; } else { return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b; } })">Back-easeOut</button>
     </div>
 	<script type="text/javascript" src="src/animation.js"></script>
     <script>
@@ -25,7 +30,7 @@
             console={log:function(){}}
         }
         var wrap=document.getElementById('wrap'),
-            handle=new Animation(8000);
+            handle=new Animation(3000);
         handle.start(function(){
             console.log('动画开始')
         }).stop(function(){
