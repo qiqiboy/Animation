@@ -45,6 +45,7 @@
         constructor:struct,
         playing:false,
         complete:false,
+        percent:0,
         bindEvent:function(){
             this.events={};
             this.on({
@@ -99,7 +100,7 @@
             return this;
         },
         now:Date.now||function(){
-            return new Date().getTime();
+            return +new Date;
         },
         toggle:function(){
             return this.playing?this.stop():this.start();
@@ -139,7 +140,6 @@
     if(!(this instanceof arguments.callee)){
         return new arguments.callee(duration,easeFunc);
     }
-    this.percent=0
     this.setDuration(duration);
     this.easeFunc=typeof easeFunc=='function'?easeFunc:function(t,b,c,d){return c*t/d+b;};
     this.bindEvent();
