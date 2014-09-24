@@ -122,8 +122,8 @@
             return this;
         },
         setDuration:function(duration){
-            this.duration=parseFloat(duration)||0;
-            this.timeout=this.duration*this.percent;
+            var ratio=this.duration?this.timeout/this.duration:0;
+            this.timeout=ratio*(this.duration=parseFloat(duration)||0);
             return this;
         },
         setTween:function(tween){
