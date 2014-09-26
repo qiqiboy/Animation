@@ -3,6 +3,7 @@
  * @author qiqiboy
  * @github https://github.com/qiqiboy/animation
  */
+;
 (function(ROOT, struct, undefined){
     "use strict";
 	
