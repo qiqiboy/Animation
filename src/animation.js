@@ -96,7 +96,7 @@
         _next:function(){
             var total=this.duration,
                 now=this.now();
-            this.percent=total?this.easeFunc.call(null,this.timeout=Math.min(total,this.timeout+now-(this.frameTime||0)),0,total,total)/total:1;
+            this.percent=total?this.easeFunc.call(null,this.timeout=Math.min(total,this.timeout+now-(this.frameTime||0)),0,total,total)/total:0;
             this.fire('next');
             if(this.timeout<total){
                 cancelFrame(this._timer);
