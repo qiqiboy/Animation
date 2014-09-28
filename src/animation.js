@@ -84,7 +84,7 @@
         _start:function(){
             if(!this.playing){
                 this.playing=true;
-                this.frameTime=this.now();
+                this.tweenTime=this.now();
                 if(this.complete){
                     this.complete=false;
                     this.timeout=0;
@@ -96,12 +96,12 @@
         _next:function(){
             var total=this.duration,
                 now=this.now();
-            this.percent=total?this.easeFunc.call(null,this.timeout=Math.min(total,this.timeout+now-(this.frameTime||0)),0,total,total)/total:1;
+            this.percent=total?this.easeFunc.call(null,this.timeout=Math.min(total,this.timeout+now-(this.tweenTime||0)),0,total,total)/total:1;
             this.fire('next');
             if(this.timeout<total){
                 cancelFrame(this._timer);
                 this._timer=nextFrame(this.next.bind(this));
-                this.frameTime=now;
+                this.tweenTime=now;
             }else{
                 this.stop().fire('finish');
             }
@@ -117,10 +117,20 @@
         },
         _finish:function(){
             if(!this.complete){   
-                this.frameTime=0;
+                this.tweenTime=0;
                 this.next();
             }
             return this;
+        },
+        frame:function(time,fn){
+            var frameTime=this.now();
+            return this.next(function(){
+                var now=this.now();
+                if(now-frameTime>=time){
+                    frameTime=now;
+                    fn.call(this);
+                }
+            });
         },
         setDuration:function(duration){
             var ratio=this.duration?this.timeout/this.duration:0;
