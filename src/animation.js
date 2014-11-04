@@ -100,7 +100,9 @@
             this.fire('next');
             if(this.timeout<total){
                 cancelFrame(this._timer);
-                this._timer=nextFrame(this.next.bind(this));
+                if(this.playing){
+                    this._timer=nextFrame(this.next.bind(this));
+                }
                 this.tweenTime=now;
             }else{
                 this.stop().fire('finish');
