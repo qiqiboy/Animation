@@ -128,7 +128,7 @@
             var frameTime=this.now();
             return this.next(function(){
                 var now=this.now();
-                if(now-frameTime>=time){
+                if(now-frameTime>=(typeof time=='function'?time.call(this):time)){
                     frameTime=now;
                     fn.call(this);
                 }
