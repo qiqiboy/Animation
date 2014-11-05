@@ -95,9 +95,9 @@
         },
         _next:function(){
             var total=this.duration,
-                now=this.now(),
-                frameTime=now-(this.tweenTime||0);
-            this.percent=total?this.easeFunc.call(null,this.timeout=Math.min(total,this.timeout+frameTime),0,total,total)/total:1;
+                now=this.now();
+            this.frameTime=now-(this.tweenTime||0);
+            this.percent=total?this.easeFunc.call(null,this.timeout=Math.min(total,this.timeout+this.frameTime),0,total,total)/total:1;
             this.fire('next',frameTime);
             if(this.timeout<total){
                 cancelFrame(this._timer);
