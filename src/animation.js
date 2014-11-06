@@ -126,12 +126,13 @@
             return this;
         },
         frame:function(time,fn){
-            var frameTime=this.now(),
-                isFunc=typeof time=='function';
+            var isFunc=typeof time=='function',
+                frameTime=0;
             return this.next(function(){
-                var now=this.now();
-                if(now-frameTime>=(isFunc?time.call(this):time)){
-                    frameTime=now;
+                var dur=isFunc?time.call(this):time;
+                frameTime+=this.frameTime;
+                if(frameTime>=dur){
+                    frameTime-=dur;
                     fn.call(this);
                 }
             });
