@@ -95,16 +95,16 @@
         },
         _next:function(){
             var total=this.duration,
-                now=this.now();
-            this.frameTime=now-(this.tweenTime||0);
-            this.percent=total?this.easeFunc.call(null,this.timeout=Math.min(total,this.timeout+this.frameTime),0,total,total)/total:1;
-            this.fire('next');
+                now=this.now(),
+                frameTime=this.playing?now-this.tweenTime:this.frameTime||0;
+            this.percent=total?this.easeFunc.call(null,this.timeout=Math.min(total,this.timeout+frameTime),0,total,total)/total:1;
+            this.tweenTime=now;
+            this.fire('next',this.frameTime=frameTime);
             if(this.timeout<total){
                 cancelFrame(this._timer);
                 if(this.playing){
                     this._timer=nextFrame(this.next.bind(this));
                 }
-                this.tweenTime=now;
             }else{
                 this.stop().fire('finish');
             }
@@ -119,17 +119,18 @@
             return this;
         },
         _finish:function(){
-            if(!this.complete){   
-                this.tweenTime=0;
+            if(!this.complete){ 
+                this.timeout=this.duration;
                 this.next();
             }
             return this;
         },
         frame:function(time,fn){
-            var frameTime=this.now();
+            var frameTime=this.now(),
+                isFunc=typeof time=='function';
             return this.next(function(){
                 var now=this.now();
-                if(now-frameTime>=(typeof time=='function'?time.call(this):time)){
+                if(now-frameTime>=(isFunc?time.call(this):time)){
                     frameTime=now;
                     fn.call(this);
                 }
