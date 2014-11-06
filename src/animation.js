@@ -136,7 +136,7 @@
                 var dur=isFunc?time.call(this):time;
                 frameTime+=this.frameTime;
                 if(frameTime>=dur){
-                    frameTime-=dur;
+                    frameTime%=dur;
                     fn.call(this);
                 }
             });
