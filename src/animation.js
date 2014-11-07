@@ -85,6 +85,10 @@
         toggle:function(){
             return this.playing?this.stop():this.start();
         },
+        reset:function(){
+            this.timeout=0;
+            return this.next();
+        },
         _start:function(){
             if(!this.playing){
                 this.playing=true;
@@ -100,7 +104,7 @@
         _next:function(){
             var total=this.duration,
                 now=this.now(),
-                frameTime=this.playing?now-this.tweenTime:this.frameTime||0;
+                frameTime=this.playing?now-this.tweenTime:0;
             this.percent=total?this.easeFunc.call(null,this.timeout=Math.min(total,this.timeout+frameTime),0,total,total)/total:1;
             this.tweenTime=now;
             this.fire('next',this.frameTime=frameTime);
