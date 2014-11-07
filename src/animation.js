@@ -105,7 +105,7 @@
             var total=this.duration,
                 now=this.now(),
                 frameTime=this.playing?now-this.tweenTime:0;
-            this.percent=total?this.easeFunc.call(null,this.timeout=Math.min(total,this.timeout+frameTime),0,total,total)/total:1;
+            this.percent=total?this.easeFunc.call(null,this.timeout=Math.max(0,Math.min(total,this.timeout+frameTime)),0,total,total)/total:1;
             this.tweenTime=now;
             this.fire('next',this.frameTime=frameTime);
             if(this.timeout<total){
