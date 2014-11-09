@@ -135,13 +135,15 @@
         },
         frame:function(time,fn){
             var isFunc=typeof time=='function',
-                frameTime=0;
+                frameTime=0,
+                offset=0;
             return this.next(function(){
                 var dur=isFunc?time.call(this):time;
                 frameTime+=this.frameTime;
                 if(frameTime>=dur){
                     frameTime%=dur;
-                    fn.call(this);
+                    offset=frameTime-offset;
+                    fn.call(this,offset/dur);
                 }
             });
         },
