@@ -142,8 +142,8 @@
                 frameTime+=this.frameTime;
                 if(frameTime>=dur){
                     frameTime%=dur;
-                    offset=frameTime-offset;
-                    fn.call(this,offset/dur);
+                    fn.call(this,(frameTime-offset)/dur);
+                    offset=frameTime;
                 }
             });
         },
