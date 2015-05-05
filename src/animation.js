@@ -25,27 +25,20 @@
                 ROOT.msCancelRequestAnimationFrame      ||
                 clearTimeout;
 
-    if(typeof Function.prototype.bind!='function'){
-        Function.prototype.bind=function(obj){
-            var self=this;
-            return function(){
-                return self.apply(obj,arguments);
+    function _forEach(iterate){
+        var i=0,len=this.length,item;
+        for(;i<len;i++){
+            item=this[i];
+            if(typeof item!='undefined'){
+                iterate(item,i,this);
             }
         }
     }
 
-    if(typeof Array.prototype.forEach!='function'){
-         Array.prototype.forEach=function(iterate){
-            var i=0,len=this.length,item;
-            for(;i<len;i++){
-                item=this[i];
-                if(typeof item!='undefined'){
-                    iterate(item,i,this);
-                }
-            }
-         }
+    function each(arr,iterate){
+        return 'forEach' in arr ? arr.forEach(iterate) : _forEach.call(arr,iterate)
     }
-    
+
     struct.prototype={
         constructor:struct,
         playing:false,
@@ -71,12 +64,13 @@
             return this;
         },
         fire:function(ev){
-            var args=[].slice.call(arguments,1);
-            (this.events[ev]||[]).forEach(function(callback){
+            var self=this,
+                args=[].slice.call(arguments,1);
+            each(this.events[ev]||[],function(callback){
                 if(typeof callback == 'function'){
-                    callback.apply(this,args);
+                    callback.apply(self,args);
                 }
-            }.bind(this));
+            });
             return this;
         },
         now:Date.now||function(){
@@ -102,7 +96,8 @@
             return this;
         },
         _next:function(){
-            var total=this.duration,
+            var self=this,
+                total=this.duration,
                 now=this.now(),
                 frameTime=this.playing?now-this.tweenTime:0;
             this.percent=total?this.easeFunc.call(null,this.timeout=Math.max(0,Math.min(total,this.timeout+frameTime)),0,total,total)/total:1;
@@ -111,7 +106,9 @@
             if(this.timeout<total){
                 cancelFrame(this._timer);
                 if(this.playing){
-                    this._timer=nextFrame(this.next.bind(this));
+                    this._timer=nextFrame(function(){
+                        self.next();
+                    });
                 }
             }else{
                 this.stop().fire('finish');
@@ -158,7 +155,7 @@
         }
     }
 
-    "start next stop finish".split(" ").forEach(function(prop){
+    each("start next stop finish".split(" "),function(prop){
         struct.prototype[prop]=function(callback){
             if(typeof callback=='function'){
                 return this.on(prop,callback);
