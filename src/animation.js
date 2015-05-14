@@ -166,15 +166,15 @@
 
     ROOT.Animation=struct;
 	
-})(window, function self(duration,easeFunc){
+})(window, function(duration,easeFunc){
     /*
      * 动画类
      * @param int(ms) duration 动画执行时间
      * @param Function easeFunc 缓动公式 eg:linear=function(t,b,c,d){return c*t/d+b;}
      *                          其它公式参见 https://github.com/zhangxinxu/Tween/blob/master/tween.js
      */
-    if(!(this instanceof self)){
-        return new self(duration,easeFunc);
+    if(!(this instanceof arguments.callee)){
+        return new arguments.callee(duration,easeFunc);
     }
     this.setDuration(duration).setTween(easeFunc).bindEvent();
 });
