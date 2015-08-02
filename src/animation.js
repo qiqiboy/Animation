@@ -164,7 +164,11 @@
         }
     });
 
-    ROOT.Animation=struct;
+    if(typeof define=='function' && define.amd){
+        define('Animation',function(){
+            return struct;
+        });
+    }eelse ROOT.Animation=struct;
 	
 })(window, function(duration,easeFunc){
     /*
