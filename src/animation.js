@@ -168,7 +168,7 @@
         define('Animation',function(){
             return struct;
         });
-    }eelse ROOT.Animation=struct;
+    } else ROOT.Animation=struct;
 	
 })(window, function(duration,easeFunc){
     /*
